@@ -14,27 +14,35 @@ namespace ip_notifier.Utils
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(FtpUtil));
 
-        public static bool UploadText(string ftpPath, string ftpUser, string ftpPwd, string fileContent)
+        public static void UploadText(string ftpPath, string ftpUser, string ftpPwd, string fileContent)
         {
             log.Debug(string.Format("Trying to upload file to FTP..."));
 
-            // Get the object used to communicate with the server.
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpPath);
-            request.Method = WebRequestMethods.Ftp.UploadFile;
+            WebRequest webRequest = WebRequest.Create(ftpPath);
+            if (webRequest is FtpWebRequest)
+            {
+                // Get the object used to communicate with the server.
+                FtpWebRequest request = (FtpWebRequest)webRequest;
+                request.Method = WebRequestMethods.Ftp.UploadFile;
 
-            // This example assumes the FTP site uses anonymous logon.
-            request.Credentials = new NetworkCredential(ftpUser, ftpPwd);
+                // This example assumes the FTP site uses anonymous logon.
+                request.Credentials = new NetworkCredential(ftpUser, ftpPwd);
 
-            byte[] fileContents = Encoding.UTF8.GetBytes(fileContent);
-            request.ContentLength = fileContents.Length;
+                byte[] fileContents = Encoding.UTF8.GetBytes(fileContent);
+                request.ContentLength = fileContents.Length;
 
-            Stream requestStream = request.GetRequestStream();
-            requestStream.Write(fileContents, 0, fileContents.Length);
-            requestStream.Close();
+                Stream requestStream = request.GetRequestStream();
+                requestStream.Write(fileContents, 0, fileContents.Length);
+                requestStream.Close();
 
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-            log.Debug(string.Format("File uploaded properly to: {0}", ftpPath));
-            return true;
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                log.Debug(string.Format("File uploaded properly to: {0}", ftpPath));
+
+            }
+            else
+            {
+                throw new ArgumentException("The path to which the text file is supposed to be uploaded is NOT a proper FTP path.");
+            }
         }
     }
 }
