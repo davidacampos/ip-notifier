@@ -1,4 +1,4 @@
-ip-notifier
+IP Notifier
 ===========
 
 Windows service that polls current external IP to see if it has been updated. If so, it upload its value to an FTP server.
@@ -10,7 +10,7 @@ It's DotNet 4.5 (C#) based and uses Inno Setup 5 for the installer.
 Installing
 -----------
 
-Just grab the latest setup.exe from /installer and you are good to go.
+Just grab the latest setup.exe from "installer" (or from [here](installer/setup.exe)) and you are good to go.
 
 The installer will ask for several settings including:
 
