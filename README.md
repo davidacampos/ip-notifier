@@ -21,3 +21,9 @@ The installer will ask for several settings including:
 Because it's a Windows service, you do not require to "run" the .exe after installing it, it will automatically run; even after reboots.
 
 After installation, settings can be updated manually by updating "ip-notifier.exe.config". A service restart is needed for changes to reflect.
+
+TODO
+-----------
+
+* Add email notification
+* Ability to change how often the IP is checked (right now is at startup and then every 24h)
